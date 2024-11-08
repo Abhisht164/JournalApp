@@ -42,7 +42,7 @@ public class UserEntryController {
         // Save the new user
         User newUser = userService.saveUser(user);
 
-        // Return a success message with the newly created user
+        // Return a success message with the newly created use
         return new ResponseEntity<>(newUser, HttpStatus.CREATED); // Return 201 Created with the new user data
     }
 
