@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -30,7 +31,6 @@ public class UserEntryController {
         return new ResponseEntity<>(allUsers, HttpStatus.OK); // 200 OK if users are found
     }
 
-
     @PostMapping("/create")
     public ResponseEntity<?> createUser(@RequestBody User user) {
         // Check if a user with the same username already exists
@@ -46,26 +46,24 @@ public class UserEntryController {
         return new ResponseEntity<>(newUser, HttpStatus.CREATED); // Return 201 Created with the new user data
     }
 
-
-    @PutMapping("/update")
+    @PutMapping()
     public ResponseEntity<?> updateUser(@RequestBody User user) {
-        User userInDb = userService.findByUserName(user.getUserName());
+        Optional<User> userInDb = userService.getUserById(user.getUserId());
 
         if (userInDb != null) {
-            System.out.println("Updated user: " + userInDb.getUserName());
+            System.out.println("Updated user: " + userInDb.get().getUserName());
 
-            userInDb.setUserName(user.getUserName());
-            userInDb.setPassword(user.getPassword());
-            userInDb.setEmail(user.getEmail());
+            userInDb.get().setUserName(user.getUserName());
+            userInDb.get().setPassword(user.getPassword());
+            userInDb.get().setEmail(user.getEmail());
 
-            User savedUser = userService.saveUser(userInDb);
+            User savedUser = userService.saveUser(userInDb.get());
             return new ResponseEntity<>(savedUser, HttpStatus.OK); // Return 200 OK with updated user data
         }
 
         System.out.println("User not found: " + user.getUserName());
         return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Return 404 if user not found
     }
-
 
     @DeleteMapping("username/{userName}")
     public ResponseEntity<?> deleteUserByName(@PathVariable String userName) {

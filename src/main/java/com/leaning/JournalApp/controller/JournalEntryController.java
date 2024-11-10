@@ -24,17 +24,6 @@ public class JournalEntryController {
     @Autowired
     private UserService userService;
 
-    //    handler for creating journal entry
-    @PostMapping("{userName}")
-    public ResponseEntity<?> createEntry(@RequestBody JournalEntry myEntry, @PathVariable String userName) {
-        try {
-            journalService.saveEntry(myEntry, userName);
-            return new ResponseEntity<>("Journal Named " + myEntry.getTitle().toUpperCase() + " Created.", HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
     //  handler for getting all journal entry
     @GetMapping("{userName}")
     public ResponseEntity<?> getAllJournalEntriesOfUser(@PathVariable String userName) {
@@ -46,7 +35,6 @@ public class JournalEntryController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-
     //    handler for getting journal entry by Id
     @GetMapping("id/{myId}")
     public ResponseEntity<?> getJournalById(@PathVariable Object myId) {
@@ -56,6 +44,18 @@ public class JournalEntryController {
         } else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    //    handler for creating journal entry
+    @PostMapping("{userName}")
+    public ResponseEntity<?> createEntry(@RequestBody JournalEntry myEntry, @PathVariable String userName) {
+        try {
+            journalService.saveEntry(myEntry, userName);
+            return new ResponseEntity<>("Journal Named " + myEntry.getTitle().toUpperCase() + " Created.", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     //    handler for updating journal by Id
     @PutMapping("/id/{userName}/{myId}")

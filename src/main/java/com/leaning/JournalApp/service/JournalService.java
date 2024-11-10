@@ -5,6 +5,7 @@ import com.leaning.JournalApp.entity.User;
 import com.leaning.JournalApp.repository.JournalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,7 @@ public class JournalService {
         return journalRepository.findById(myId);
     }
 
+    @Transactional
     public void saveEntry(JournalEntry journalEntry, String userName) {
         User user = userService.findByUserName(userName);
         JournalEntry saved = journalRepository.save(journalEntry);
@@ -41,6 +43,7 @@ public class JournalService {
         return journalRepository.save(journalEntry);
     }
 
+    @Transactional
     public void deleteJournal(Object id, String userName) {
         System.out.println(id.toString());
         User user = userService.findByUserName(userName);
