@@ -20,4 +20,18 @@ public class PublicController {
         return "OK";
     }
 
+    @PostMapping("/create")
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        // Check if a user with the same username already exists
+        User existingUser = userService.findByUserName(user.getUserName());
+        if (existingUser != null) {
+            return new ResponseEntity<>("Username already exists", HttpStatus.BAD_REQUEST); // Return 400 Bad Request if user exists
+        }
+
+        // Save the new user
+        User newUser = userService.saveUser(user);
+
+        // Return a success message with the newly created use
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED); // Return 201 Created with the new user data
+    }
 }

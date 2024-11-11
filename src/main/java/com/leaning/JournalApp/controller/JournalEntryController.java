@@ -24,6 +24,13 @@ public class JournalEntryController {
     @Autowired
     private UserService userService;
 
+    @GetMapping()
+    public ResponseEntity<?> getAllJournalEntriesOfUser() {
+
+            return new ResponseEntity<>(journalService.getAllJournals(), HttpStatus.OK);
+
+    }
+
     //  handler for getting all journal entry
     @GetMapping("{userName}")
     public ResponseEntity<?> getAllJournalEntriesOfUser(@PathVariable String userName) {
