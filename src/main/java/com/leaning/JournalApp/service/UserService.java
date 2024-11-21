@@ -9,7 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,22 +20,14 @@ public class UserService {
 
     private static final PasswordEncoder passwordencoder=new BCryptPasswordEncoder();
 
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
-    }
-
-    public Optional<User> getUserById(Object myId){
-        return userRepository.findById(myId);
-    }
-
     public User saveUser(User user) {
         user.setPassword(passwordencoder.encode(user.getPassword()));
-        user.setRoles(List.of("user"));
+//        user.setRoles(List.of("user"));
         return userRepository.save(user);
     }
 
-    public User saveNewUser(User user) {
-        return userRepository.save(user);
+    public void updateUser(User user){
+        userRepository.save(user);
     }
 
     public User findByUserName(String username){
